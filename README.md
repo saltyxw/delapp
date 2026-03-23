@@ -1,17 +1,28 @@
-Level Base
-Shops page where users can choose a shop and add goods to the cart (data retrieved from the database).
-Shopping cart page to check added products, change quantity, or remove items.
-Order form with validation for name, email, phone, and address.
-Orders are saved in the database upon submission.
+# LEVEL BASE
 
-Middle Level
-Responsive design supported across desktops, tablets, and mobile devices.
-Product filtering by category (e.g., Burgers, Drinks, Desserts).
-Dynamic product sorting by price (ascending/descending) and name (A-Z).
-Shop filtering based on rating ranges stored in the database.(partially)
+- **Shops page** — choose a shop and add goods to cart (data retrieved from the database)
+- **Shopping cart page** — check products, change quantity, remove items
+- **Order form** — validation for name, email, phone, and address
+- **Orders saved** — saved to database upon submission
 
-Advanced Level
-Optimized performance using pagination or infinite scroll for product lists.(partially)
-Order History page where users can find past orders by email and phone.
-"Reorder" functionality to quickly add items from a previous order back into the cart.
-Coupons page with a copy-to-clipboard feature and discount application in the cart.
+---
+
+# MIDDLE LEVEL
+
+- **Responsive design** — desktops, tablets, mobile devices
+- **Product filtering** — by category (Burgers, Drinks, Desserts)
+- **Dynamic sorting** — by price (ascending/descending) and name (A-Z)
+- **Shop filtering** — by rating ranges *(partially)*
+
+---
+
+# ADVANCED LEVEL
+
+- **Pagination / infinite scroll** — optimized performance *(partially)*
+- **Order History** — find past orders by email and phone
+- **Reorder** — add items from previous order back to cart
+- **Coupons** — copy-to-clipboard + discount in cart
+---
+# Links
+Web Site: https://delapp-355a.vercel.app/
+
