@@ -5,6 +5,7 @@ import "@mantine/core/styles.css";
 import "@mantine/notifications/styles.css";
 import { QueryProvider } from "@/providers/QueryProvider";
 import { MantineProviders } from "@/providers/MantineProviders";
+import { ColorSchemeScript } from "@mantine/core";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,6 +32,9 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
+      <head>
+        <ColorSchemeScript defaultColorScheme="light" />
+      </head>
       <body>
         <QueryProvider>
           <MantineProviders>{children}</MantineProviders>
