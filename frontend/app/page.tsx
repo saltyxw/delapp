@@ -1,5 +1,8 @@
 "use client";
+
 export const dynamic = "force-dynamic";
+
+import { useState, useEffect } from "react";
 import {
   AppShell,
   Box,
@@ -10,6 +13,7 @@ import {
   Group,
   Title,
   Select,
+  Loader,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
@@ -23,9 +27,15 @@ import { ProductGrid } from "@/components/ProductGrid";
 import { Product } from "@/types/product";
 
 export default function ShopPage() {
+  const [mounted, setMounted] = useState(false);
   const [opened, { toggle }] = useDisclosure();
-  const addItem = useCart((state) => state.addItem);
 
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setMounted(true);
+  }, []);
+
+  const addItem = useCart((state) => state.addItem);
   const { state, setters, data, loading } = useShopData();
 
   const handleAddToCart = (product: Product) => {
@@ -36,6 +46,17 @@ export default function ShopPage() {
       color: "green",
     });
   };
+
+  if (!mounted) {
+    return (
+      <Center h="100vh">
+        <Stack align="center">
+          <Loader size="xl" />
+          <Title order={3}>Loading Shop...</Title>
+        </Stack>
+      </Center>
+    );
+  }
 
   return (
     <AppShell
