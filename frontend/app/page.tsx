@@ -1,18 +1,24 @@
-// src/app/page.tsx
 "use client";
+
 import dynamic from "next/dynamic";
-import { Center, Loader } from "@mantine/core";
+import { Center, Loader, Stack, Title } from "@mantine/core";
 
-// Вимикаємо SSR (Server Side Rendering) для всієї логіки магазину
-const ShopPageContent = dynamic(() => import("@/components/ShopPageContent"), {
-  ssr: false,
-  loading: () => (
-    <Center h="100vh">
-      <Loader size="xl" />
-    </Center>
-  ),
-});
+// Якщо в ShopPageContent використовується export default, то код має бути таким:
+const ShopContent = dynamic(
+  () => import("@/components/ShopPageContent"), // Прибираємо .then(...)
+  {
+    ssr: false,
+    loading: () => (
+      <Center h="100vh">
+        <Stack align="center" gap="md">
+          <Loader size="xl" color="blue" />
+          <Title order={3}>Завантаження магазину...</Title>
+        </Stack>
+      </Center>
+    ),
+  },
+);
 
-export default function Page() {
-  return <ShopPageContent />;
+export default function ShopPage() {
+  return <ShopContent />;
 }
