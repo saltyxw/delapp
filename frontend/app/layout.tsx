@@ -3,7 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import "@mantine/core/styles.css";
 import "@mantine/notifications/styles.css";
-import { MantineProvidesr } from "@/providers/MantineProvider";
+import { MantineProviders } from "@/providers/MantineProvider";
 import { QueryProvider } from "@/providers/QueryProvider";
 
 const geistSans = Geist({
@@ -33,7 +33,7 @@ export default function RootLayout({
     >
       <body>
         <QueryProvider>
-          <MantineProvidesr>{children}</MantineProvidesr>
+          <MantineProviders>{children}</MantineProviders>
         </QueryProvider>
       </body>
     </html>
