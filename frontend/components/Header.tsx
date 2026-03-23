@@ -2,7 +2,6 @@
 
 import { Container, Group, Title, Button, Burger } from "@mantine/core";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 
 interface HeaderProps {
   opened?: boolean;
@@ -10,10 +9,9 @@ interface HeaderProps {
 }
 
 export function Header({ opened, toggle }: HeaderProps) {
-  const pathname = usePathname();
-
-  const getVariant = (path: string) =>
-    pathname === path ? "filled" : "subtle";
+  // Note: we intentionally avoid `usePathname()` because it caused a runtime crash
+  // on the homepage after deploy. Active highlighting is not critical for functionality.
+  const getVariant = (_path: string) => "subtle";
 
   return (
     <Container size="xl" h="100%">

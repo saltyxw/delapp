@@ -10,6 +10,7 @@ type Props = {
 type State = {
   hasError: boolean;
   error?: Error;
+  componentStack?: string;
 };
 
 export class ErrorBoundary extends React.Component<Props, State> {
@@ -19,10 +20,13 @@ export class ErrorBoundary extends React.Component<Props, State> {
     return { hasError: true, error };
   }
 
-  componentDidCatch(error: Error) {
+  componentDidCatch(error: Error, info: React.ErrorInfo) {
     // Intentionally minimal; in Vercel we want the UI to show details.
     // eslint-disable-next-line no-console
-    console.error("ShopPage runtime error:", error);
+    console.error("ShopPage runtime error:", error, info?.componentStack);
+    this.setState({
+      componentStack: info?.componentStack ?? undefined,
+    });
   }
 
   render() {
@@ -36,6 +40,18 @@ export class ErrorBoundary extends React.Component<Props, State> {
           {"\n\n"}
           {this.state.error?.stack}
         </pre>
+        {this.state.componentStack ? (
+          <pre
+            style={{
+              whiteSpace: "pre-wrap",
+              wordBreak: "break-word",
+              marginTop: 12,
+              opacity: 0.9,
+            }}
+          >
+            {this.state.componentStack}
+          </pre>
+        ) : null}
         <div style={{ marginTop: 12, opacity: 0.75 }}>
           Please check the message above and report it back.
         </div>
