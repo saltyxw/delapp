@@ -30,19 +30,19 @@ export default function ShopPage() {
   const [mounted, setMounted] = useState(false);
   const [opened, { toggle }] = useDisclosure();
 
+  // Ініціалізуємо хуки
+  const addItem = useCart((state) => state.addItem);
+  const shopData = useShopData();
+
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     setMounted(true);
   }, []);
-
-  const addItem = useCart((state) => state.addItem);
-  const { state, setters, data, loading } = useShopData();
 
   const handleAddToCart = (product: Product) => {
     addItem(product);
     notifications.show({
-      title: "Success",
-      message: `${product.name} added`,
+      title: "Успіх",
+      message: `${product.name} додано до кошика`,
       color: "green",
     });
   };
@@ -50,13 +50,17 @@ export default function ShopPage() {
   if (!mounted) {
     return (
       <Center h="100vh">
-        <Stack align="center">
-          <Loader size="xl" />
-          <Title order={3}>Loading Shop...</Title>
-        </Stack>
+        <Loader size="xl" />
       </Center>
     );
   }
+
+  const {
+    state = {} as any,
+    setters = {} as any,
+    data = {} as any,
+    loading = {} as any,
+  } = shopData || {};
 
   return (
     <AppShell
@@ -76,34 +80,32 @@ export default function ShopPage() {
       <AppShell.Navbar p="md">
         <Stack justify="space-between" h="100%">
           <ShopSidebar
-            shops={data.filteredShops}
-            activeShop={state.activeShopId}
+            shops={data?.filteredShops || []}
+            activeShop={state?.activeShopId}
             onShopSelect={(id) => {
-              setters.setActiveShop(id);
-              setters.setProductsPage(1);
-              if (opened) {
-                toggle();
-              }
+              setters?.setActiveShop?.(id);
+              setters?.setProductsPage?.(1);
+              if (opened) toggle();
             }}
           >
             <Box hiddenFrom="md">
-              <Divider my="md" label="Filters" labelPosition="center" />
+              <Divider my="md" label="Фільтри" labelPosition="center" />
               <FilterSidebar
-                minRating={state.minRating}
-                onRatingChange={setters.setMinRating}
-                selectedCategories={state.selectedCategories}
-                onCategoriesChange={setters.setSelectedCategories}
+                minRating={state?.minRating}
+                onRatingChange={setters?.setMinRating}
+                selectedCategories={state?.selectedCategories}
+                onCategoriesChange={setters?.setSelectedCategories}
               />
             </Box>
           </ShopSidebar>
 
-          {data.shopsData?.meta && data.shopsData.meta.lastPage > 1 && (
+          {data?.shopsData?.meta && data.shopsData.meta.lastPage > 1 && (
             <Center pt="sm">
               <Pagination
                 size="xs"
                 total={data.shopsData.meta.lastPage}
-                value={state.shopsPage}
-                onChange={setters.setShopsPage}
+                value={state?.shopsPage}
+                onChange={setters?.setShopsPage}
               />
             </Center>
           )}
@@ -113,45 +115,45 @@ export default function ShopPage() {
       <AppShell.Aside p="md" visibleFrom="md">
         <FilterSidebar
           isAside
-          minRating={state.minRating}
-          onRatingChange={setters.setMinRating}
-          selectedCategories={state.selectedCategories}
-          onCategoriesChange={setters.setSelectedCategories}
+          minRating={state?.minRating}
+          onRatingChange={setters?.setMinRating}
+          selectedCategories={state?.selectedCategories}
+          onCategoriesChange={setters?.setSelectedCategories}
         />
       </AppShell.Aside>
 
       <AppShell.Main>
         <Group justify="space-between" align="flex-end" mb="lg">
           <Title order={4}>
-            {loading.isShopsLoading
-              ? "Loading..."
-              : state.activeShopId
-                ? `Products from ${state.currentShopName}`
-                : "Select a shop"}
+            {loading?.isShopsLoading
+              ? "Завантаження..."
+              : state?.activeShopId
+                ? `Товари магазину ${state?.currentShopName || ""}`
+                : "Оберіть магазин"}
           </Title>
           <Select
-            label="Sort products"
+            label="Сортування"
             data={[
-              { value: "price_asc", label: "Cheapest First" },
-              { value: "price_desc", label: "Expensive First" },
-              { value: "name_az", label: "Name: A-Z" },
+              { value: "price_asc", label: "Спочатку дешевші" },
+              { value: "price_desc", label: "Спочатку дорожчі" },
+              { value: "name_az", label: "Назва: А-Я" },
             ]}
-            value={state.sortBy}
-            onChange={setters.setSortBy}
+            value={state?.sortBy}
+            onChange={setters?.setSortBy}
             w={200}
           />
         </Group>
 
         <ProductGrid
-          products={data.displayedProducts}
-          isLoading={loading.isProductsLoading}
+          products={data?.displayedProducts || []}
+          isLoading={loading?.isProductsLoading}
           onAddToCart={handleAddToCart}
           pagination={
-            data.productsData?.meta
+            data?.productsData?.meta
               ? {
                   total: data.productsData.meta.lastPage,
-                  active: state.productsPage,
-                  onChange: setters.setProductsPage,
+                  active: state?.productsPage,
+                  onChange: setters?.setProductsPage,
                 }
               : null
           }
