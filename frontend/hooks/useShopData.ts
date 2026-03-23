@@ -2,7 +2,7 @@ import { useState, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getShops, getShopProducts } from "@/api/shops";
 
-export function useShopData() {
+export function useShopData(queriesEnabled: boolean = true) {
   const [selectedShopId, setSelectedShopId] = useState<string | null>(null);
   const [sortBy, setSortBy] = useState<string | null>("price_asc");
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
@@ -13,6 +13,7 @@ export function useShopData() {
   const { data: shopsData, isLoading: isShopsLoading } = useQuery({
     queryKey: ["shops", shopsPage],
     queryFn: () => getShops(shopsPage),
+    enabled: queriesEnabled,
   });
 
   const shops = useMemo(() => shopsData?.items || [], [shopsData]);
@@ -22,7 +23,7 @@ export function useShopData() {
   const { data: productsData, isLoading: isProductsLoading } = useQuery({
     queryKey: ["products", activeShopId, productsPage],
     queryFn: () => getShopProducts(activeShopId!, productsPage),
-    enabled: !!activeShopId,
+    enabled: queriesEnabled && !!activeShopId,
   });
 
   const products = useMemo(() => productsData?.items || [], [productsData]);

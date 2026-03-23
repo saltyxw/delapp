@@ -32,7 +32,7 @@ export default function ShopPage() {
 
   // Ініціалізуємо хуки
   const addItem = useCart((state) => state.addItem);
-  const shopData = useShopData();
+  const shopData = useShopData(mounted);
 
   useEffect(() => {
     setMounted(true);
