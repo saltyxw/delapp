@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { Container, Group, Title, Button, Burger } from "@mantine/core";
 import Link from "next/link";
 
@@ -9,8 +10,26 @@ interface HeaderProps {
 }
 
 export function Header({ opened, toggle }: HeaderProps) {
-  // Note: we intentionally avoid `usePathname()` because it caused a runtime crash
-  // on the homepage after deploy. Active highlighting is not critical for functionality.
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Якщо ми на сервері, рендеримо мінімальний сталий HTML
+  // Це запобігає помилці "auth of e" під час гідратації
+  if (!mounted) {
+    return (
+      <Container size="xl" h={70}>
+        <Group h="100%" px="md">
+          <Title order={3} c="blue" size="h4">
+            Delivery
+          </Title>
+        </Group>
+      </Container>
+    );
+  }
+
   const getVariant = (_path: string) => "subtle";
 
   return (
@@ -25,7 +44,6 @@ export function Header({ opened, toggle }: HeaderProps) {
           flex: 1,
         }}
       >
-        {" "}
         <Group gap="xs" wrap="nowrap">
           {toggle && (
             <Burger
@@ -38,13 +56,13 @@ export function Header({ opened, toggle }: HeaderProps) {
           <Title
             order={3}
             c="blue"
-            component={Link}
             style={{ textDecoration: "none", whiteSpace: "nowrap" }}
             size="h4"
           >
             Delivery
           </Title>
         </Group>
+
         <Group
           wrap="nowrap"
           style={{
@@ -62,7 +80,6 @@ export function Header({ opened, toggle }: HeaderProps) {
           >
             Shops
           </Button>
-
           <Button
             component={Link}
             href="/cart"
@@ -72,7 +89,6 @@ export function Header({ opened, toggle }: HeaderProps) {
           >
             Cart
           </Button>
-
           <Button
             component={Link}
             href="/history"
@@ -82,7 +98,6 @@ export function Header({ opened, toggle }: HeaderProps) {
           >
             History
           </Button>
-
           <Button
             component={Link}
             href="/coupons"
