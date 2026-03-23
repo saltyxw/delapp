@@ -41,7 +41,6 @@ export function Header({ opened, toggle }: HeaderProps) {
             order={3}
             c="blue"
             component={Link}
-            href="/"
             style={{ textDecoration: "none", whiteSpace: "nowrap" }}
             size="h4"
           >
