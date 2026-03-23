@@ -17,7 +17,11 @@ export function ProductCard({
       style={{ display: "flex", flexDirection: "column" }}
     >
       <Card.Section>
-        <Image src={product.image} height={160} alt={product.name} />
+        {product.image ? (
+          <Image src={product.image} height={160} alt={product.name} />
+        ) : (
+          <div style={{ height: 160, background: "#f1f3f5" }} />
+        )}
       </Card.Section>
 
       <Stack justify="space-between" mt="md" style={{ flex: 1 }}>
